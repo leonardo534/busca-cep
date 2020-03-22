@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,19 +24,24 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textoResultado;
+    private EditText editCep;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         textoResultado = findViewById(R.id.textoResultado);
+        editCep = findViewById(R.id.editCep);
     }
 
     public void buscarCep(View view) {
-        MyTask task = new MyTask();
-        String urlApiCep = "https://viacep.com.br/ws/61936330/json";
-        task.execute(urlApiCep);
-
+        if(editCep.getText().toString().length() == 8 ) {
+            MyTask task = new MyTask();
+            String urlApiCep = "https://viacep.com.br/ws/" + editCep.getText().toString() + "/json";
+            task.execute(urlApiCep);
+        }else{
+            Toast.makeText(this, "Cep inválido ou incompleto", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class MyTask extends AsyncTask<String, Void, String>{
