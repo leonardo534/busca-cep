@@ -51,18 +51,22 @@ public class MainActivity extends AppCompatActivity {
             BufferedReader bufferedReader = null;
             StringBuffer buffer = null;
             try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+                URL url = new URL(strings[0]); //BUSCA A URL COLOCADA NO task.execute()
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection(); // Abre a conexão com a API
 
-                InputStream inputStream = conexao.getInputStream();
+                InputStream inputStream = conexao.getInputStream(); // Recupera os dados em Bytes
 
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream); //Decodifica os dados de Bytes para Caracteres
 
-                bufferedReader = new BufferedReader(inputStreamReader);
+                bufferedReader = new BufferedReader(inputStreamReader); //Coloca em caracteres que seja possivel a compreensão
                 String linha = "";
                 buffer = new StringBuffer();
-                while((linha = bufferedReader.readLine()) != null){
-                    buffer.append(linha);
+                while((linha = bufferedReader.readLine()) != null){ //Enquanto o bufferedReader possuir dados ele vai ler uma linha e jogar na variavel Linha
+                    buffer.append(linha); //Buffer.append não sobrepõe o arquivo cada vez que é colocado uma linha, mas ele coloca um embaixo do outro
+                    /* Exemplo: caneta
+                                lapis
+                                folha*/
+
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return buffer.toString();
+            return buffer.toString(); //Retorna os dados coletados
         }
 
         @Override
@@ -84,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             String uf = null;
 
             try {
-                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObject = new JSONObject(s); // Converte para JSON os dados buscados
 
-                cep = jsonObject.getString("cep");
+                cep = jsonObject.getString("cep"); // Variavel cep armazena tudo que tiver valor "cep" na arvore JSON
                 logradouro = jsonObject.getString("logradouro");
                 complemento = jsonObject.getString("complemento");
                 bairro = jsonObject.getString("bairro");
